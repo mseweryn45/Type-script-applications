@@ -1,17 +1,17 @@
 class ProjectApp {
-    dataInput1 : HTMLInputElement;
-    dataInput2 : HTMLInputElement;
-    dataInput3 : HTMLInputElement;
-    dataInput4 : HTMLInputElement;
-    sumData : HTMLInputElement;
-    avgData : HTMLInputElement;
-    minData : HTMLInputElement;
-    maxData : HTMLInputElement;
+    dataInput1: HTMLInputElement;
+    dataInput2: HTMLInputElement;
+    dataInput3: HTMLInputElement;
+    dataInput4: HTMLInputElement;
+    sumData: HTMLInputElement;
+    avgData: HTMLInputElement;
+    minData: HTMLInputElement;
+    maxData: HTMLInputElement;
 
-    constructor(){
+    constructor() {
         this.StartApp();
     }
-    StartApp(){
+    StartApp() {
         this.getInputs();
         this.watchInputs();
     }
@@ -37,13 +37,13 @@ class ProjectApp {
     showData() {
         const data1 = +this.dataInput1.value;
         const data2 = +this.dataInput2.value;
-        const data3= +this.dataInput3.value;
+        const data3 = +this.dataInput3.value;
         const data4 = +this.dataInput4.value;
 
         const sum = data1 + data2 + data3 + data4;
         const avg = sum / 4;
-        const min = Math.min(data1 , data2 , data3 , data4);
-        const max = Math.max(data1 , data2 , data3 , data4);
+        const min = Math.min(data1, data2, data3, data4);
+        const max = Math.max(data1, data2, data3, data4);
 
         this.sumData.value = sum.toString();
         this.avgData.value = avg.toString();
@@ -53,4 +53,4 @@ class ProjectApp {
     }
 }
 
-let projectApp = new ProjectApp(); 
+let projectApp = new ProjectApp();
