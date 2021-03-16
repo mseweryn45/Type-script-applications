@@ -85,7 +85,6 @@ var ProjectApp2 = /** @class */ (function () {
         for (var i = 0; i < e; i++) {
             _loop_1(i);
         }
-        console.log(e);
         if (e == 0) {
             var elements = document.querySelectorAll(".dynamic-inputs > div");
             elements.forEach(function (element) {
