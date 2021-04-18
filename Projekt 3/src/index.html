@@ -3,12 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,500;0,700;1,300&display=swap" rel="stylesheet">
     <title>Pogodynka</title>
   </head>
   <body>
     <main class="container">
-      
-      <input type="text" id="cityInput">
+      <section class="input-box">
+        <input type="text" placeholder="Please write city name" id="cityInput" class="input">
+        <button class="btn-add">Dodaj</button>
+      </section>      
+      <section class="city">
+        <!-- <div class="city_card">
+          <div class="city__box--top">
+            <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" class="city__box--top-img">
+            <span class="city__box--top-temp">12</span>
+          </div>
+          <div class="city__box--place">
+            <span class="city__box--place-text">Sunny</span>
+            <span class="city__box--place-country">Cracow</span>
+          </div>
+        </div> -->
+      </section>
     </main>
     <script src="index.js"></script>
   </body>
