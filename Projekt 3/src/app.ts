@@ -1,40 +1,40 @@
 export class App {
     apiKey = 'a4cb374648481f3247013e5f9ead66e2'
-    btnAdd : HTMLButtonElement;
+    btnAdd: HTMLButtonElement;
     cityInput: HTMLInputElement;
     cityName: string;
     data: string;
     weaterBox: HTMLDivElement;
-    data1:string;
+    data1: string;
     constructor() {
         this.getInput();
         this.getData();
     }
 
     async saveCityInfo(city: string) {
-        
-        const weather = await this.getWeather2(city);
-        
-        if (weather.cod !== "404"){
+
+        const weather = await this.getWeather(city);
+
+        if (weather.cod !== "404") {
             this.saveData(weather.name);
         }
     }
 
-    async getWeather2(city: string ): Promise<any> {
+    async getWeather(city: string): Promise<any> {
         const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}`;
         const weatherResponse = await fetch(openWeatherUrl);
         const weatherData = await weatherResponse.json();
         return weatherData;
     }
 
-    async createWeatherElement(city: string , localStorageName : string): Promise<any> {
-        const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}`;
-        const weatherResponse = await fetch(openWeatherUrl);
-        const weatherData = await weatherResponse.json();          
+    async createWeatherElement(city: string, localStorageName: string): Promise<any> {
+        const weatherData = await this.getWeather(city);
+        console.log(weatherData)
         const temp = Math.round(parseInt(weatherData["main"].temp, 10) - 273.15);
-        const weatherType =  weatherData.weather[0].main;
-        this.createBox(temp , weatherType, city, localStorageName);
-        return weatherData;
+        const weatherType = weatherData.weather[0].main;
+        const pressure = weatherData["main"].pressure;
+        const humidity = weatherData["main"].humidity;
+        this.createBox(temp, weatherType, city, localStorageName, pressure, humidity);
     }
 
     saveData(data: any) {
@@ -49,8 +49,7 @@ export class App {
             for (let i = 0; i < keys; i++) {
                 const data = localStorage.getItem('weatherData' + i);
                 const localStorageName = 'weatherData' + i;
-                const parseData = JSON.parse(data); 
-                console.log('weatherData' + i)  
+                const parseData = JSON.parse(data);
                 this.createWeatherElement(parseData, localStorageName)
             }
         } else {
@@ -58,54 +57,65 @@ export class App {
         }
     }
 
-    getInput(){
+    getInput() {
         this.btnAdd = document.querySelector(".btn-add")
         this.cityInput = document.querySelector("#cityInput");
         this.btnAdd.addEventListener("click", () => this.showData())
     }
 
-    showData(){
-        const data = this.cityInput.value;
-        this.saveCityInfo(data);
+    showData() {
+        const dataInput = this.cityInput.value;
+        this.saveCityInfo(dataInput);
     }
 
-    createElement(){
-        // this.createBox()
 
-    }
-    createBox(temp : number , weaterType : string, city : string, localStorageName: string){
+    createBox(temp: number, weaterType: string, city: string, localStorageName: string, pressure: string, humidity: string) {
         const weaterBox = document.querySelector(".city");
         const divElement = document.createElement("div");
         const buttonElement = document.createElement("button")
-        buttonElement.addEventListener("click", function(){
+        buttonElement.addEventListener("click", function () {
             divElement.parentElement.removeChild(divElement)
             localStorage.removeItem(localStorageName);
         })
         buttonElement.innerText = "Remove";
         divElement.classList.add("city_card");
         this.createTemp(divElement, temp)
-        this.createWeather(divElement , weaterType)
+        this.createWeather(divElement, weaterType)
         this.createCountry(divElement, city)
+        this.createPressure(divElement, pressure)
+        this.createHumidity(divElement, humidity)
         weaterBox.appendChild(divElement)
         divElement.appendChild(buttonElement)
     }
-    createCountry(elem : HTMLDivElement, city : string){
-        const spanElement = document.createElement("span"); 
+    createCountry(elem: HTMLDivElement, city: string) {
+        const spanElement = document.createElement("span");
         spanElement.classList.add("city__box--top-country");
         spanElement.innerText = city;
         elem.appendChild(spanElement)
     }
-    createTemp(elem : HTMLDivElement, temp : number){
-        const spanElement = document.createElement("span"); 
+    createTemp(elem: HTMLDivElement, temp: number) {
+        const spanElement = document.createElement("span");
         spanElement.classList.add("city__box--top-temp");
         spanElement.innerHTML = temp.toString() + "&#x2103";
         elem.appendChild(spanElement)
     }
-    createWeather(elem : HTMLDivElement, weatherType : string){
-        const spanElement = document.createElement("span"); 
+    createWeather(elem: HTMLDivElement, weatherType: string) {
+        const spanElement = document.createElement("span");
         spanElement.classList.add("city__box--top-weater");
         spanElement.innerHTML = weatherType
         elem.appendChild(spanElement)
     }
-    
+    createPressure(elem: HTMLDivElement, pressure: string) {
+        const spanElement = document.createElement("span");
+        spanElement.classList.add("city__box--top-weater");
+        spanElement.innerHTML = "Pressure: " + pressure;
+        elem.appendChild(spanElement)
+    }
+    createHumidity(elem: HTMLDivElement, humidity: string) {
+        const spanElement = document.createElement("span");
+        spanElement.classList.add("city__box--top-weater");
+        spanElement.innerHTML = "Humidity: " + humidity;
+        elem.appendChild(spanElement)
+    }
+
 }
