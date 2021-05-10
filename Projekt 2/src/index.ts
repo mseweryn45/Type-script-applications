@@ -7,14 +7,15 @@ let rideSound : HTMLAudioElement;
 let snareSound : HTMLAudioElement;
 let tinkSound : HTMLAudioElement;
 let tomSound : HTMLAudioElement;
+const btnRecordChannel1 : HTMLButtonElement = document.querySelector("#recordChannel1");
 
 const channel1: any[] = [];
+let recordTime: any;
 appStart();
 
 function appStart(): void {
-    window.addEventListener("keypress", onKeyDown);
-    const btnPlayChannel1 = document.querySelector("#playChannel1");
-    btnPlayChannel1.addEventListener("click", onPlayChannel1);
+    btnRecordChannel1.addEventListener("click", recordChannel1);
+    btnRecordChannel1.addEventListener("click", record)
     getAudioTags();
 }
 
@@ -22,6 +23,12 @@ function onPlayChannel1(): void{
     channel1.forEach(sound => {
         setTimeout(() => playSound(sound.key), sound.time)
     })
+}
+
+function record(ev: MouseEvent) : void{
+    console.log(ev.timeStamp)
+    recordTime = ev.timeStamp;
+    channel1.length = 0;
 }
 
 function getAudioTags() {
@@ -38,10 +45,17 @@ function getAudioTags() {
 
 function onKeyDown(ev: KeyboardEvent): void{
     const key = ev.key;
-    const time = ev.timeStamp;
+    const time = ev.timeStamp - recordTime;
     channel1.push({key,time});
     playSound(key);
     console.log(ev);
+    console.log(channel1)
+}
+
+function recordChannel1(){
+    window.addEventListener("keypress", onKeyDown);
+    const btnPlayChannel1 = document.querySelector("#playChannel1");
+    btnPlayChannel1.addEventListener("click", onPlayChannel1);
 }
 
 function playSound(key: string){

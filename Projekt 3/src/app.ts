@@ -9,6 +9,7 @@ export class App {
     constructor() {
         this.getInput();
         this.getData();
+        setInterval(()=> this.refreshData(), 120000)
     }
 
     async saveCityInfo(city: string) {
@@ -43,6 +44,8 @@ export class App {
         this.createWeatherElement(data, 'weatherData' + keys)
     }
 
+    
+
     getData() {
         let keys = Object.keys(localStorage).length - 1;
         if (keys > 0) {
@@ -51,10 +54,18 @@ export class App {
                 const localStorageName = 'weatherData' + i;
                 const parseData = JSON.parse(data);
                 this.createWeatherElement(parseData, localStorageName)
+                console.log(parseData)
             }
         } else {
             return {};
         }
+    }
+    refreshData(){
+        const allElements = document.querySelectorAll(".city_card")
+        allElements.forEach(element => {
+            element.parentElement.removeChild(element)
+        });  
+        this.getData();      
     }
 
     getInput() {

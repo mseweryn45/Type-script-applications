@@ -36,7 +36,8 @@ body{
 
 .channels{
     display: flex;
-    flex-direction: column;
+    height: auto;
+    width: 10%;
 }
 
 .channels button{
@@ -44,4 +45,9 @@ body{
     padding: 25px;
     margin-bottom: 20px;
     cursor: pointer;
+}
+
+.recordChannel button{
+    background-color: rgb(218, 27, 27);
+    color: white;
 }
