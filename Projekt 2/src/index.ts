@@ -1,34 +1,138 @@
-let clapSound : HTMLAudioElement;
-let boomSound : HTMLAudioElement;
-let hihatSound : HTMLAudioElement;
-let kickSound : HTMLAudioElement;
-let openhatSound : HTMLAudioElement;
-let rideSound : HTMLAudioElement;
-let snareSound : HTMLAudioElement;
-let tinkSound : HTMLAudioElement;
-let tomSound : HTMLAudioElement;
-const btnRecordChannel1 : HTMLButtonElement = document.querySelector("#recordChannel1");
+let clapSound: HTMLAudioElement;
+let boomSound: HTMLAudioElement;
+let hihatSound: HTMLAudioElement;
+let kickSound: HTMLAudioElement;
+let openhatSound: HTMLAudioElement;
+let rideSound: HTMLAudioElement;
+let snareSound: HTMLAudioElement;
+let tinkSound: HTMLAudioElement;
+let tomSound: HTMLAudioElement;
+const btnRecordChannel: any = document.querySelectorAll(".recordChannel button");
+const btnPlayChannel: any = document.querySelectorAll(".playchannel button");
+const btnTimer1: HTMLButtonElement = document.querySelector(".timer1");
+const btnTimer2: HTMLButtonElement = document.querySelector(".timer2");
+const btnTimer3: HTMLButtonElement = document.querySelector(".timer3");
+
 
 const channel1: any[] = [];
-let recordTime: any;
+const channel2: any[] = [];
+const channel3: any[] = [];
+const channel4: any[] = [];
+let recordTime1: number;
+let recordTime2: number;
+let recordTime3: number;
+let recordTime4: number;
+let recordingChannel: number;
+let timer: number;
 appStart();
 
 function appStart(): void {
-    btnRecordChannel1.addEventListener("click", recordChannel1);
-    btnRecordChannel1.addEventListener("click", record)
+    for (let i = 0; i < btnRecordChannel.length; i++) {
+        btnRecordChannel[i].addEventListener("click", function () {
+            recordChannel1(i + 1)
+            record;
+            this.classList.add("active");
+            setTimeout(function () {
+                btnRecordChannel[i].classList.remove("active");
+            }, timer);
+        });
+        btnRecordChannel[i].addEventListener("click", record);
+    }
     getAudioTags();
+    setTimer();
 }
-
-function onPlayChannel1(): void{
-    channel1.forEach(sound => {
-        setTimeout(() => playSound(sound.key), sound.time)
+function setTimer() {
+    timer = 3000;
+    removeActive();
+    btnTimer1.classList.add("active");
+    btnTimer1.addEventListener("click", function () {
+        timer = 3000;
+        removeActive();
+        this.classList.add("active");
+    })
+    btnTimer2.addEventListener("click", function () {
+        timer = 6000;
+        removeActive();
+        this.classList.add("active");
+    })
+    btnTimer3.addEventListener("click", function () {
+        timer = 10000;
+        removeActive();
+        this.classList.add("active");
     })
 }
+function removeActive() {
+    const btnTimer = document.querySelectorAll(".timer button")
+    btnTimer.forEach(element => {
+        element.classList.remove("active")
+    });
+}
 
-function record(ev: MouseEvent) : void{
-    console.log(ev.timeStamp)
-    recordTime = ev.timeStamp;
-    channel1.length = 0;
+function onPlayChannel1(elem) {
+    if (elem == 1) {
+        channel1.forEach(sound => {
+            setTimeout(() => playSound(sound.key), sound.time)
+        })
+    } else if (elem == 2) {
+        channel2.forEach(sound => {
+            setTimeout(() => playSound(sound.key), sound.time)
+        })
+    } else if (elem == 3) {
+        channel3.forEach(sound => {
+            setTimeout(() => playSound(sound.key), sound.time)
+        })
+    } else if (elem == 4) {
+        channel4.forEach(sound => {
+            setTimeout(() => playSound(sound.key), sound.time)
+        })
+    }
+}
+
+function record(ev: MouseEvent): void {
+    if (recordingChannel == 1) {
+        recordTime1 = ev.timeStamp;
+        channel1.length = 0;
+    } else if (recordingChannel == 2) {
+        recordTime2 = ev.timeStamp;
+        channel2.length = 0;
+    } else if (recordingChannel == 3) {
+        recordTime3 = ev.timeStamp;
+        channel3.length = 0;
+    } else if (recordingChannel == 4) {
+        recordTime4 = ev.timeStamp;
+        channel4.length = 0;
+    }
+}
+
+function onKeyDown(ev: KeyboardEvent): void {
+    const key = ev.key;
+    if (recordingChannel == 1) {
+        const time = ev.timeStamp - recordTime1;
+        channel1.push({ key, time });
+    } else if (recordingChannel == 2) {
+        const time = ev.timeStamp - recordTime2;
+        channel2.push({ key, time });
+    } else if (recordingChannel == 3) {
+        const time = ev.timeStamp - recordTime3;
+        channel3.push({ key, time });
+    } else if (recordingChannel == 4) {
+        const time = ev.timeStamp - recordTime4;
+        channel4.push({ key, time });
+    }
+    playSound(key);
+}
+
+function recordChannel1(elem: number) {
+    recordingChannel = elem;
+    window.addEventListener("keypress", onKeyDown);
+    setTimeout(function () {
+        window.removeEventListener("keypress", onKeyDown);
+    }, timer);
+    const recordingChannel2 = "#playChannel" + elem;
+    const btnPlayChannel = document.querySelector(recordingChannel2);
+    btnPlayChannel.addEventListener("click", function () {
+        onPlayChannel1(elem)
+    });
 }
 
 function getAudioTags() {
@@ -43,54 +147,39 @@ function getAudioTags() {
     tomSound = document.querySelector('[data-audio="tom"]');
 }
 
-function onKeyDown(ev: KeyboardEvent): void{
-    const key = ev.key;
-    const time = ev.timeStamp - recordTime;
-    channel1.push({key,time});
-    playSound(key);
-    console.log(ev);
-    console.log(channel1)
-}
-
-function recordChannel1(){
-    window.addEventListener("keypress", onKeyDown);
-    const btnPlayChannel1 = document.querySelector("#playChannel1");
-    btnPlayChannel1.addEventListener("click", onPlayChannel1);
-}
-
-function playSound(key: string){
-    switch (key){
+function playSound(key: string) {
+    switch (key) {
         case "a":
             clapSound.currentTime = 0;
             clapSound.play();
-        break;
+            break;
         case "s":
             boomSound.currentTime = 0;
             boomSound.play();
-        break;
+            break;
         case "d":
             hihatSound.currentTime = 0;
             hihatSound.play();
-        break;
+            break;
         case "f":
             kickSound.currentTime = 0;
             kickSound.play();
-        break;
+            break;
         case "g":
             openhatSound.currentTime = 0;
             openhatSound.play();
-        break;
+            break;
         case "h":
             rideSound.currentTime = 0;
             rideSound.play();
-        break;
+            break;
         case "j":
             tinkSound.currentTime = 0;
             tinkSound.play();
-        break;
+            break;
         case "k":
             tomSound.currentTime = 0;
             tomSound.play();
-        break;
+            break;
     }
 }
