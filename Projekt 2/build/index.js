@@ -107,7 +107,7 @@ function record(ev) {
         channel4.length = 0;
     }
 }
-function onKeyDown(ev) {
+function onKeyDown(ev, elem) {
     var key = ev.key;
     if (recordingChannel == 1) {
         var time = ev.timeStamp - recordTime1;
@@ -129,15 +129,18 @@ function onKeyDown(ev) {
 }
 function recordChannel1(elem) {
     recordingChannel = elem;
-    window.addEventListener("keypress", onKeyDown);
+    window.addEventListener("keypress", onKey);
     setTimeout(function () {
-        window.removeEventListener("keypress", onKeyDown);
+        window.removeEventListener("keypress", onKey);
     }, timer);
     var recordingChannel2 = "#playChannel" + elem;
     var btnPlayChannel = document.querySelector(recordingChannel2);
     btnPlayChannel.addEventListener("click", function () {
         onPlayChannel1(elem);
     });
+    function onKey(ev) {
+        onKeyDown(ev, elem);
+    }
 }
 function getAudioTags() {
     clapSound = document.querySelector('[data-audio="clap"]');

@@ -104,7 +104,7 @@ function record(ev: MouseEvent): void {
     }
 }
 
-function onKeyDown(ev: KeyboardEvent): void {
+function onKeyDown(ev: KeyboardEvent, elem: number): void {
     const key = ev.key;
     if (recordingChannel == 1) {
         const time = ev.timeStamp - recordTime1;
@@ -124,15 +124,18 @@ function onKeyDown(ev: KeyboardEvent): void {
 
 function recordChannel1(elem: number) {
     recordingChannel = elem;
-    window.addEventListener("keypress", onKeyDown);
+    window.addEventListener("keypress", onKey);
     setTimeout(function () {
-        window.removeEventListener("keypress", onKeyDown);
+        window.removeEventListener("keypress", onKey);
     }, timer);
     const recordingChannel2 = "#playChannel" + elem;
     const btnPlayChannel = document.querySelector(recordingChannel2);
     btnPlayChannel.addEventListener("click", function () {
         onPlayChannel1(elem)
     });
+    function onKey(ev: KeyboardEvent) {
+        onKeyDown(ev, elem)
+    }
 }
 
 function getAudioTags() {
