@@ -36,11 +36,11 @@ async function updateNote(id: string, note: any) {
 
 // getNote("ZWQpkg4K1k1pouhwuhIl").then(res => console.log(res))
 async function getNote(id: string) {
-    return await db.collection('notes').doc(id).get().then(res => ({id: res.id,data: res.data()}))
+    return await db.collection('notes').doc(id).get().then(res => ({ id: res.id, data: res.data() }))
 }
 
 
 getNotes().then(res => console.log(res))
 async function getNotes() {
-    return await db.collection('notes').get().then(res => ({size: res.size,docs: res.docs}))
+    return await db.collection('notes').get().then(res => ({ size: res.size, docs: res.docs }))
 }
