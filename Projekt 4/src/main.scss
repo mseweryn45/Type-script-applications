@@ -105,6 +105,16 @@ input, input::placeholder{
     height: 20px;
     cursor: pointer;
   }
+  button:last-child{
+    left: 35px;
+    background-color: #fff;
+    border: 1px solid #262626;
+    padding: 0;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
 }
 
 

@@ -1,6 +1,8 @@
 import { Note } from './note'
+import { Notes } from "./notes"
 import { AppStorage } from './appStorage';
 const note = new Note();
+const notes = new Notes();
 
 export class App {
     btnAdd: HTMLButtonElement;
@@ -23,6 +25,7 @@ export class App {
                 const localStorageName = 'Note' + i;
                 const parseData = JSON.parse(data);
                 note.createBox(parseData, localStorageName)
+                notes.changeOrder();
             }
         } else {
             return {};
@@ -35,7 +38,7 @@ export class App {
         this.descriptionInput = document.querySelector("#descriptionInput");
         this.selectorInput = document.querySelector("#color");
         const now = new Date();
-        this.addedData = `${now.getDate()}.${now.getMonth()+1}.${now.getFullYear()}`
+        this.addedData = `${now.getHours()}:${now.getMinutes()} ${now.getDate()}.${now.getMonth()+1}.${now.getFullYear()}`
         this.btnAdd.addEventListener("click", () => this.showData());
     }
 
@@ -45,6 +48,7 @@ export class App {
         const color = this.selectorInput.value;
         const date = this.addedData;
         const appStorage = new AppStorage(title,description,color,date)
+        notes.changeOrder();
     }
 
 }
