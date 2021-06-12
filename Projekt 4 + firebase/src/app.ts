@@ -1,26 +1,21 @@
+import { Note } from './note'
+import { Notes } from "./notes"
+import { AppStorage } from './appStorage';
+const note = new Note();
+const notes = new Notes();
+
 export class App {
-    apiKey = 'a4cb374648481f3247013e5f9ead66e2'
     btnAdd: HTMLButtonElement;
     titleInput: HTMLInputElement;
     descriptionInput: HTMLInputElement;
-    cityName: string;
+    selectorInput: HTMLSelectElement;
     data: string;
-    weaterBox: HTMLDivElement;
-    data1: string;
+    addedData: string;
+
     constructor() {
         this.getInput();
         this.getData();
     }
-
-    saveData(title: string, description: string) {
-        let keys = Object.keys(localStorage).length - 1;
-        let json = JSON.stringify({ title, description });
-        localStorage.setItem('Note' + keys, json);
-        const parseData = JSON.parse(json);
-        this.createBox(parseData, 'Note' + keys)
-    }
-
-
 
     getData() {
         let keys = Object.keys(localStorage).length - 1;
@@ -29,7 +24,8 @@ export class App {
                 const data = localStorage.getItem('Note' + i);
                 const localStorageName = 'Note' + i;
                 const parseData = JSON.parse(data);
-                this.createBox(parseData, localStorageName)
+                note.createBox(parseData, localStorageName)
+                notes.changeOrder();
             }
         } else {
             return {};
@@ -40,46 +36,19 @@ export class App {
         this.btnAdd = document.querySelector(".btn-add")
         this.titleInput = document.querySelector("#titleInput");
         this.descriptionInput = document.querySelector("#descriptionInput");
-        this.btnAdd.addEventListener("click", () => this.showData())
-
+        this.selectorInput = document.querySelector("#color");
+        const now = new Date();
+        this.addedData = `${now.getHours()}:${now.getMinutes()} ${now.getDate()}.${now.getMonth()+1}.${now.getFullYear()}`
+        this.btnAdd.addEventListener("click", () => this.showData());
     }
-
 
     showData() {
         const title = this.titleInput.value;
         const description = this.descriptionInput.value;
-        this.saveData(title, description);
-    }
-
-
-    createBox(data: any, localStorageName: string) {
-        const title = data.title;
-        const description = data.description;
-        const weaterBox = document.querySelector(".city");
-        const divElement = document.createElement("div");
-        const buttonElement = document.createElement("button")
-        buttonElement.addEventListener("click", function () {
-            divElement.parentElement.removeChild(divElement)
-            localStorage.removeItem(localStorageName);
-        })
-        buttonElement.innerText = "Remove";
-        divElement.classList.add("city_card");
-        this.createCountry(divElement, title)
-        this.createWeather(divElement, description)
-        weaterBox.appendChild(divElement)
-        divElement.appendChild(buttonElement)
-    }
-    createCountry(elem: HTMLDivElement, title: string) {
-        const spanElement = document.createElement("span");
-        spanElement.classList.add("city__box--top-country");
-        spanElement.innerText = title;
-        elem.appendChild(spanElement)
-    }
-    createWeather(elem: HTMLDivElement, weatherType: string) {
-        const spanElement = document.createElement("span");
-        spanElement.classList.add("city__box--top-weater");
-        spanElement.innerHTML = weatherType
-        elem.appendChild(spanElement)
+        const color = this.selectorInput.value;
+        const date = this.addedData;
+        const appStorage = new AppStorage(title,description,color,date)
+        notes.changeOrder();
     }
 
 }
