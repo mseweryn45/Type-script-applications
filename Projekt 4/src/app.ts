@@ -6,8 +6,9 @@ export class App {
     btnAdd: HTMLButtonElement;
     titleInput: HTMLInputElement;
     descriptionInput: HTMLInputElement;
+    selectorInput: HTMLSelectElement;
     data: string;
-    weaterBox: HTMLDivElement;
+    addedData: string;
 
     constructor() {
         this.getInput();
@@ -32,14 +33,18 @@ export class App {
         this.btnAdd = document.querySelector(".btn-add")
         this.titleInput = document.querySelector("#titleInput");
         this.descriptionInput = document.querySelector("#descriptionInput");
-        this.btnAdd.addEventListener("click", () => this.showData())
-
+        this.selectorInput = document.querySelector("#color");
+        const now = new Date();
+        this.addedData = `${now.getDate()}.${now.getMonth()+1}.${now.getFullYear()}`
+        this.btnAdd.addEventListener("click", () => this.showData());
     }
 
     showData() {
         const title = this.titleInput.value;
         const description = this.descriptionInput.value;
-        const appStorage = new AppStorage(title,description)
+        const color = this.selectorInput.value;
+        const date = this.addedData;
+        const appStorage = new AppStorage(title,description,color,date)
     }
 
 }
