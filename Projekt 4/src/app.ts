@@ -1,4 +1,5 @@
 import { Note } from './note'
+import { AppStorage } from './appStorage';
 const note = new Note();
 
 export class App {
@@ -31,7 +32,6 @@ export class App {
                 note.createBox(parseData, localStorageName)
             }
         } else {
-            console.log("tal")
             return {};
         }
     }
@@ -48,7 +48,8 @@ export class App {
     showData() {
         const title = this.titleInput.value;
         const description = this.descriptionInput.value;
-        this.saveData(title, description);
+        const appStorage = new AppStorage(title,description)
+        // this.saveData(title, description);
     }
 
 }
