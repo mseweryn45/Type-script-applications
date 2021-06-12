@@ -14,14 +14,6 @@ export class App {
         this.getData();
     }
 
-    saveData(title: string, description: string) {
-        let keys = Object.keys(localStorage).length - 1;
-        let json = JSON.stringify({ title, description });
-        localStorage.setItem('Note' + keys, json);
-        const parseData = JSON.parse(json);
-        note.createBox(parseData, 'Note' + keys)
-    }
-
     getData() {
         let keys = Object.keys(localStorage).length - 1;
         if (keys > 0) {
@@ -44,12 +36,10 @@ export class App {
 
     }
 
-
     showData() {
         const title = this.titleInput.value;
         const description = this.descriptionInput.value;
         const appStorage = new AppStorage(title,description)
-        // this.saveData(title, description);
     }
 
 }

@@ -21,19 +21,5 @@ export class AppStorage implements IAppStorage {
         const parseData = JSON.parse(json);
         note.createBox(parseData, 'Note' + keys)
     }
-
-    getData() {
-        let keys = Object.keys(localStorage).length - 1;
-        if (keys > 0) {
-            for (let i = 0; i < keys; i++) {
-                const data = localStorage.getItem('Note' + i);
-                const localStorageName = 'Note' + i;
-                const parseData = JSON.parse(data);
-                note.createBox(parseData, localStorageName)
-            }
-        } else {
-            return {};
-        }
-    }
 }
 
