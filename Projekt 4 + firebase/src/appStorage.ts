@@ -28,20 +28,22 @@ export class AppStorage implements IAppStorage {
             description: description,
             color: color,
             date: date,
-            id:noteLenght
+            id:noteLenght,
+            baseID:"",
         }
         await db.collection('notes').add(note);
         //upadate id
-        const col = await db.collection('notes').get();        
+        const col = await db.collection("notes")
+        .orderBy("id", "asc").get();        
         const noteList = col.docs.map(doc=>doc.id)
-        const noteID = noteList[0]
+        const noteID = noteList[noteLenght]
             await db.collection('notes').doc(noteID).update(
                 {
-                    id: noteID
+                    baseID: noteList[noteLenght]
                 }
             );
        
-        noteElement.createBox(note, noteID);
+        noteElement.createBox(note, noteList[noteLenght]);
     }
 }
 

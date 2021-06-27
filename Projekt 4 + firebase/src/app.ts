@@ -28,7 +28,7 @@ export class App {
         let data = col.docs.map(doc => doc.data());
         for (let i = 0; i < data.length; i++) {
             const element = data[i];
-            noteElement.createBox(element, element.id)
+            noteElement.createBox(element, element.baseID)
         }
     }
 
