@@ -1,6 +1,8 @@
 import { Notes } from "./notes"
 const notes = new Notes();
+import { db } from "./app"
 
+//create box
 export class Note {
     
     createBox(data: any, localStorageName: string) {
@@ -11,9 +13,9 @@ export class Note {
         const weaterBox = document.querySelector(".city");
         const divElement = document.createElement("div");
         const buttonElement = document.createElement("button")
-        buttonElement.addEventListener("click", function () {
+        buttonElement.addEventListener("click",async function () {
             divElement.parentElement.removeChild(divElement)
-            localStorage.removeItem(localStorageName);
+            await db.collection('notes').doc(localStorageName).delete();
         })
         const buttonElementPin = document.createElement("button")
         buttonElementPin.addEventListener("click", function () {

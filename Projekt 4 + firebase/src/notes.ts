@@ -1,5 +1,5 @@
 export class Notes {
-
+    //for pinned elements
     changeOrder(){
         let pinnedNotes : NodeListOf<HTMLDivElement> = document.querySelectorAll(".pinned")
         let allNotes : NodeListOf<HTMLDivElement>  = document.querySelectorAll("div:not(.pinned)")

@@ -1,11 +1,13 @@
 import { Note } from './note'
-const note = new Note();
+import { db } from "./app"
+const noteElement = new Note();
+
 
 interface IAppStorage {
     title: String;
     description: String;
-    color: string
-    date: string
+    color: string;
+    date: string;
 }
 
 export class AppStorage implements IAppStorage {
@@ -14,16 +16,32 @@ export class AppStorage implements IAppStorage {
     color: string
     date: string
 
-    constructor(title: string, description: string, color: string, date: string){
-        this.saveData(title, description, color, date)
+    constructor(title: string, description: string, color: string, date: string) {
+        this.addNote(title, description, color, date)
     }
 
-    saveData(title: string, description: string, color: string, date: string) {
-        let keys = Object.keys(localStorage).length - 1;
-        let json = JSON.stringify({ title, description, color, date });
-        localStorage.setItem('Note' + keys, json);
-        const parseData = JSON.parse(json);
-        note.createBox(parseData, 'Note' + keys)
+
+    async addNote(title: string, description: string, color: string, date: string) {
+        const noteLenght = await (await db.collection('notes').get()).docs.map(doc => doc.data()).length;
+        const note = {
+            title: title,
+            description: description,
+            color: color,
+            date: date,
+            id:noteLenght
+        }
+        await db.collection('notes').add(note);
+        //upadate id
+        const col = await db.collection('notes').get();        
+        const noteList = col.docs.map(doc=>doc.id)
+        const noteID = noteList[0]
+            await db.collection('notes').doc(noteID).update(
+                {
+                    id: noteID
+                }
+            );
+       
+        noteElement.createBox(note, noteID);
     }
 }
 
